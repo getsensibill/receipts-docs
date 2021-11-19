@@ -20,5 +20,6 @@ The general high-level flow is:
 <!--theme: info-->
 > To get your Client Account set up please contact Sensibill Support Team.
 
-Next -> [Authentication](./Authentication.md)
+---
 
+**Next -> [Authentication](./Authentication.md)**

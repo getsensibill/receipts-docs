@@ -15,4 +15,4 @@ You can see a high-level flow of Integration Server managing User Accounts on be
 
 As mentioned above, Client Account credentials are required to request the User Access Tokens for the related User Accounts. Client Account can be configured with OAuth2 or JWT credentials depending on which auth flow is preferred. We recommend using JWT if the client's system already supports such a method or it's easy to implement. The biggest reason is that JWT flow involves fewer calls to the Sensibill API and is more straightforward. 
 
-See [JWT Authentication Flow](./JWT-Authentication-Flow.md) and [OAuth2 Authentication Flow](OAuth2-Authentication-Flow.md) for details.
+See **[JWT Authentication Flow](./JWT-Authentication-Flow.md)** and **[OAuth2 Authentication Flow](OAuth2-Authentication-Flow.md)** for details.
