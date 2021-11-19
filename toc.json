@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "type": "item",
+      "title": "Introduction",
+      "uri": "docs/Introduction.md"
+    },
+    {
+      "type": "group",
+      "title": "Authentication",
+      "uri": "docs/Authentication.md",
+      "items": [
+        {
+          "type": "item",
+          "title": "Overview",
+          "uri": "docs/Authentication.md"
+        },
+        {
+          "type": "item",
+          "title": "OAuth2 flow",
+          "uri": "docs/OAuth2-Authentication-Flow.md"
+        },
+        {
+          "type": "item",
+          "title": "JWT Authentication Flow",
+          "uri": "docs/JWT-Authentication-Flow.md"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "title": "APIS"
+    },
+    {
+      "type": "item",
+      "title": "Sensibill API",
+      "uri": "sensibill-api-docs.yaml"
+    }
+  ]
+}
