@@ -23,7 +23,7 @@ JWS consists of 3 parts - headers, payload and signature.
 Only 2 headers are required for JWS to work with Sensibill - `alg` and `kid`.
 
 - `alg`: Sensibill supports **RSA​** or **ECDSA​** algorithms with ​2048-bit​ key size for signatures at the moment. The desired value is to be supplied during the Client Account set up through the Sensibill Support Team.
-- `kid`: this is the ID of the public key that should be used for JWT signature verification, it should correspond to one of the IDs returned by the client's public keys URL. See [JWT Signature Verification](./JWT-Authentication-Flow.md#jwt-signature-verification) for details. 
+- `kid`: this is the ID of the public key that should be used for JWT signature verification, it should correspond to one of the IDs returned by the client's public keys URL. See [JWT Signature Verification](./JWT-Authentication-Flow.md#jws-signature-verification) for details. 
 - `typ`: this header **is not required** but if present must be equal to `JWT`.
 
 > Desired algorithm for the `alg` header needs to be configured on the Client Account. Please contact the Support Team to do that.
