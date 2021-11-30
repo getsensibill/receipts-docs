@@ -59,9 +59,9 @@ At a high level, the verification process looks as described in the following se
 
 ## JWE Support and Requirements
 
-Sensibill API supports encrypted JWTs. It's yet another layer of security on top of JWS (please see the specs mentioned in the Introduction) where apart from signing the JWT, the resulting JWS is also encrypted using Sensibill's public key.
+Sensibill API supports encrypted JWTs (JWEs). That is yet another layer of security on top of JWS (please see the specs mentioned in the Introduction) where, apart from signing the JWT, the resulting JWS is also encrypted using Sensibill's public key.
 
-JWE currently supports RSAES OAEP using default parameters for encrypting the Content Encryption Key (CEK) and AES GCM using 256-bit key for encrypting the content. 
+JWE currently supports RSAES OAEP using default parameters for encrypting the Content Encryption Key (CEK) and AES GCM using the 256-bit key for encrypting the content. 
 
 - `alg`: **RSA-OAEP**
 - `enc`: **A256GCM**
