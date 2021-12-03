@@ -87,6 +87,8 @@ Let's consider some common examples of receipt layouts and how they map to the d
 
 ### Totals
 
+---
+
 #### Exhibit A
 
 Here, we have a standard North American receipt with a before-tax subtotal, taxes and after-tax total.
@@ -127,3 +129,291 @@ Here, we have a standard North American receipt with a before-tax subtotal, taxe
     }
 }
 ```
+
+---
+
+#### Exhibit B
+
+In this example, we have a standard receipt from European countries that have the VAT taxes included in the final price. The taxes are listed underneath the final total.
+
+![Exhibit B](../assets/images/receipts/receipt-example-totals-exhibit-b.jpg)
+
+```json
+{
+    "totalBeforeDiscountsFeesTips": {
+        "afterTax": 29.45,
+        "taxes": [
+            {
+                "amount": 0.78,
+                "type": "Sales Tax"
+            }
+        ]
+    },
+    "totalBeforeTips": {
+        "afterTax": 29.45,
+        "taxes": [
+            {
+                "amount": 0.78,
+                "type": "Sales Tax"
+            }
+        ]
+    },
+    "total": {
+        "taxes": [
+            {
+                "amount": 0.78,
+                "type": "Sales Tax"
+            }
+        ],
+        "afterTax": 29.45
+    }
+}
+```
+
+
+---
+
+#### Exhibit C
+
+Here is where it gets even more complicated. In this example we have a North American restaurant receipt with a subtotal of all the items, the total after taxes, followed by a tip, and then the final payment amount.
+
+![Exhibit C](../assets/images/receipts/receipt-example-totals-exhibit-c.jpg)
+
+```json
+{
+    "totalBeforeDiscountsFeesTips": {
+        "beforeTax": 16.65,
+        "afterTax": 18.81,
+        "taxes": [
+            {
+                "amount": 2.16,
+                "type": "HST"
+            }
+        ]
+    },
+    "totalBeforeTips": {
+        "beforeTax": 16.65,
+        "afterTax": 18.81,
+        "taxes": [
+            {
+                "amount": 2.16,
+                "type": "HST"
+            }
+        ]
+    },
+    "tips": [
+        {
+            "beforeTax": 1,
+            "taxes": [
+                {
+                    "amount": 0
+                }
+            ],
+            "afterTax": 1
+        }
+    ],
+    "total": {
+        "beforeTax": 17.65,
+        "taxes": [
+            {
+                "amount": 2.16,
+                "type": "HST"
+            },
+            {
+                "amount": 0
+            }
+        ],
+        "afterTax": 19.81
+    }
+}
+```
+
+---
+
+#### Exhibit D
+
+In this example we have a receipt with free shipping that displays the shipping charges, and then the same amount as a discount.
+
+![Exhibit D](../assets/images/receipts/receipt-example-totals-exhibit-d.jpg)
+
+```json
+{
+    "totalBeforeDiscountsFeesTips": {
+        "beforeTax": 91.7
+    },
+    "discounts": [
+        {
+            "beforeTax": -4.95,
+            "type": "general"
+        }
+    ],
+    "fees": [
+        {
+            "beforeTax": 4.95,
+            "description": "SHIPPING",
+            "type": "shipping"
+        }
+    ],
+    "totalBeforeTips": {
+        "afterTax": 96.29,
+        "taxes": [
+            {
+                "amount": 4.59,
+                "type": "HST"
+            }
+        ]
+    },
+    "total": {
+        "taxes": [
+            {
+                "amount": 4.59,
+                "type": "HST"
+            }
+        ],
+        "afterTax": 96.29
+    }
+}
+```
+
+---
+
+#### Exhibit E
+
+Finally, we have a payment receipt where the tip was applied at the end.
+
+![Exhibit E](../assets/images/receipts/receipt-example-totals-exhibit-e.jpg)
+
+```json
+{
+    "totalBeforeDiscountsFeesTips": {
+        "beforeTax": 15.8
+    },
+    "totalBeforeTips": {
+        "beforeTax": 15.8
+    },
+    "tips": [
+        {
+            "beforeTax": 2.37,
+            "taxes": [
+                {
+                    "amount": 0
+                }
+            ],
+            "afterTax": 2.37
+        }
+    ],
+    "total": {
+        "beforeTax": 18.17,
+        "taxes": [
+            {
+                "amount": 0
+            }
+        ],
+        "afterTax": 18.17
+    }
+}
+```
+
+### Items
+
+---
+
+#### Exhibit A
+
+In this example from a North American clothing store receipt, we have:
+The original price before tax, along with
+the item quantity final price,
+and the discount amount.
+
+**Note**: *These prices are listed before taxes.*
+
+![Exhibit A](../assets/images/receipts/receipt-example-items-exhibit-a.png)
+
+```json
+{
+    "items": [
+        {
+            "unitListPrice": {
+                "beforeTax": 20
+            },
+            "unitPrice": {
+                "beforeTax": 15
+            },
+            "priceBeforeDiscountsFees": {
+                "beforeTax": 20
+            },
+            "price": {
+                "beforeTax": 15
+            },
+            "discounts": [
+                {
+                    "description": "Promotional Sale",
+                    "beforeTax": -5,
+                    "type": "general"
+                }
+            ],
+            "itemIDs": [
+                "34152421"
+            ],
+            "name": "BOO Cl IN STNDRD FT VNK",
+            "unitQuantity": 1
+        }
+    ]
+}
+
+```
+
+---
+
+#### Exhibit B
+
+In this example from a North American grocery store, we have the original list price and then the final price taking into account the unit quantity.
+
+
+![Exhibit B](../assets/images/receipts/receipt-example-items-exhibit-b.png)
+
+```json
+{
+    "items": [
+        {
+            "unitListPrice": {
+                "beforeTax": 4.34
+            },
+            "price": {
+                "beforeTax": 4.27
+            },
+            "itemIDs": [
+                "3438"
+            ],
+            "name": "APPLE AMBROSIA R",
+            "unitOfMeasure": "kg",
+            "unitQuantity": 0.985
+        }
+    ]
+}
+
+```
+
+---
+
+#### Exhibit C
+
+In this example from a UK grocery receipt, the taxes are included in the price so the prices are listed as after tax.
+
+![Exhibit C](../assets/images/receipts/receipt-example-items-exhibit-c.png)
+
+```json
+{
+    "priceBeforeDiscountsFees": {
+        "afterTax": 2.25
+    },
+    "price": {
+        "afterTax": 2.25
+    },
+    "name": "ST D STRAWB SPREAD",
+    "unitQuantity": 1
+}
+
+```
+
+
