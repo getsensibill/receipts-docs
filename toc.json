@@ -28,6 +28,11 @@
       ]
     },
     {
+      "type": "item",
+      "title": "Receipt Data Format",
+      "uri": "docs/Receipt-Data-Format.md"
+    },
+    {
       "type": "divider",
       "title": "APIS"
     },
