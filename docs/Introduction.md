@@ -6,7 +6,7 @@ There is a concept of a **Client Account** and a **User Account** in Sensibill's
 
 At the moment receipt processing and management features of the Sensibill API can only be used through a User Account. Client Accounts are only used to manage User Accounts.
 
-![Relation between Clients, Users and Receipts](../assets/images/entity-relations.png 'Relation between Clients, Users and Receipts')
+![Relation between Clients, Users and Receipts](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/entity-relations.png 'Relation between Clients, Users and Receipts')
 
 The general high-level flow is:
 - A client creates a Client Account with Sensibill through the Sensibill Support Team;
