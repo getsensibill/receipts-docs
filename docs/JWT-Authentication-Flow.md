@@ -10,7 +10,7 @@ JWTs can be used with Sensibill API as just another kind of credentials to acqui
 
 The diagram below demonstrates how using JWTs for User Registration and Authentication reduces the number of calls that need to be made to the Sensibill API.
 
-![JWT Auth Flow](../assets/images/jwt-flow.png 'JWT Auth and Registration Flow')
+![JWT Auth Flow](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/jwt-flow.png 'JWT Auth and Registration Flow')
 
 As you can see from the diagram above only 2 endpoints support JWT - `POST /jwtRegister` and `POST /jwtAuthenticate`. Please continue reading to find out the specifics of the usage for those endpoints.
 
@@ -55,7 +55,7 @@ Clients are required to provide a publicly accessible URL with a list of public 
 
 At a high level, the verification process looks as described in the following sequence diagram.
 
-![JWT Signature Verification Flow](../assets/images/jwt-verification-flow.png 'JWT Signature Verification Flow')
+![JWT Signature Verification Flow](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/jwt-verification-flow.png 'JWT Signature Verification Flow')
 
 ## JWE Support and Requirements
 

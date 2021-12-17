@@ -93,7 +93,7 @@ Let's consider some common examples of receipt layouts and how they map to the d
 
 Here, we have a standard North American receipt with a before-tax subtotal, taxes and after-tax total.
 
-![Exhibit A](../assets/images/receipts/receipt-example-totals-exhibit-a.png)
+![Exhibit A](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-totals-exhibit-a.png)
 
 ```json
 {
@@ -136,7 +136,7 @@ Here, we have a standard North American receipt with a before-tax subtotal, taxe
 
 In this example, we have a standard receipt from European countries that have the VAT taxes included in the final price. The taxes are listed underneath the final total.
 
-![Exhibit B](../assets/images/receipts/receipt-example-totals-exhibit-b.jpg)
+![Exhibit B](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-totals-exhibit-b.jpg)
 
 ```json
 {
@@ -177,7 +177,7 @@ In this example, we have a standard receipt from European countries that have th
 
 Here is where it gets even more complicated. In this example we have a North American restaurant receipt with a subtotal of all the items, the total after taxes, followed by a tip, and then the final payment amount.
 
-![Exhibit C](../assets/images/receipts/receipt-example-totals-exhibit-c.jpg)
+![Exhibit C](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-totals-exhibit-c.jpg)
 
 ```json
 {
@@ -234,7 +234,7 @@ Here is where it gets even more complicated. In this example we have a North Ame
 
 In this example we have a receipt with free shipping that displays the shipping charges, and then the same amount as a discount.
 
-![Exhibit D](../assets/images/receipts/receipt-example-totals-exhibit-d.jpg)
+![Exhibit D](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-totals-exhibit-d.jpg)
 
 ```json
 {
@@ -281,7 +281,7 @@ In this example we have a receipt with free shipping that displays the shipping 
 
 Finally, we have a payment receipt where the tip was applied at the end.
 
-![Exhibit E](../assets/images/receipts/receipt-example-totals-exhibit-e.jpg)
+![Exhibit E](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-totals-exhibit-e.jpg)
 
 ```json
 {
@@ -327,7 +327,7 @@ and the discount amount.
 
 **Note**: *These prices are listed before taxes.*
 
-![Exhibit A](../assets/images/receipts/receipt-example-items-exhibit-a.png)
+![Exhibit A](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-items-exhibit-a.png)
 
 ```json
 {
@@ -370,7 +370,7 @@ and the discount amount.
 In this example from a North American grocery store, we have the original list price and then the final price taking into account the unit quantity.
 
 
-![Exhibit B](../assets/images/receipts/receipt-example-items-exhibit-b.png)
+![Exhibit B](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-items-exhibit-b.png)
 
 ```json
 {
@@ -400,7 +400,7 @@ In this example from a North American grocery store, we have the original list p
 
 In this example from a UK grocery receipt, the taxes are included in the price so the prices are listed as after tax.
 
-![Exhibit C](../assets/images/receipts/receipt-example-items-exhibit-c.png)
+![Exhibit C](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/receipts/receipt-example-items-exhibit-c.png)
 
 ```json
 {

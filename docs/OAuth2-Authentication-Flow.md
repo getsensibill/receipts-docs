@@ -25,7 +25,7 @@ Once the **User Account** is created you can then acquire the **User Access Toke
 
 Considering the SSO approach mentioned above here is how the OAuth 2.0 flow looks like with Sensibill.
 
-![Oauth 2.0 Flow with Sensibill](../assets/images/oauth2-flow.png 'Oauth 2.0 Flow with Sensibill')
+![Oauth 2.0 Flow with Sensibill](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/oauth2-flow.png 'Oauth 2.0 Flow with Sensibill')
 
 Let's review all the steps in detail.
 

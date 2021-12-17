@@ -11,7 +11,7 @@ Usually, the logic of creating User Accounts and getting User Access Tokens for 
 
 You can see a high-level flow of Integration Server managing User Accounts on behalf of the client and retrieving User Access Tokens below.
 
-![High Level User Management Flow](../assets/images/user-management-flow.png 'High Level User Management Flow')
+![High Level User Management Flow](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/user-management-flow.png 'High Level User Management Flow')
 
 As mentioned above, Client Account credentials are required to request the User Access Tokens for the related User Accounts. Client Account can be configured with OAuth2 or JWT credentials depending on which auth flow is preferred. We recommend using JWT if the client's system already supports such a method or it's easy to implement. The biggest reason is that JWT flow involves fewer calls to the Sensibill API and is more straightforward. 
 
