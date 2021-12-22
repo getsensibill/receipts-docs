@@ -4,12 +4,12 @@ As described in the [Introduction](./Introduction.md), Sensibill API requires th
 
 To start using receipt processing and management features of the Sensibill API, you need to, first, acquire a **User Access Token** (sometimes interchangeably referred to as the **User Session Token**). That requires Client Level credentials which can either be API key and secret or a JWT token. Please refer to the corresponding sections of the docs for details.
 
-Usually, the logic of creating User Accounts and getting User Access Tokens for them is handled by something we call **Integration Server**. That can either be a separate service within the client's backend system or just a module that is an integral part of the client's backend app. 
+Usually, the logic of creating User Accounts and getting User Access Tokens for them is handled by something we call **Integration Service**. That can either be a separate service within the client's backend system or just a module that is an integral part of the client's backend app. 
 
 <!--theme: info-->
-> An **Integration Server** is part of the client's system responsible for performing Sensibill User Accounts management. It can be implemented as either a separate service within the client's backend system or as a module that is an integral part of the client's backend app. 
+> An **Integration Service** is part of the client's system responsible for performing Sensibill User Accounts management. It can be implemented as either a separate service within the client's backend system or as a module that is an integral part of the client's backend app. 
 
-You can see a high-level flow of Integration Server managing User Accounts on behalf of the client and retrieving User Access Tokens below.
+You can see a high-level flow of Integration Service managing User Accounts on behalf of the client and retrieving User Access Tokens below.
 
 ![High Level User Management Flow](https://github.com/getsensibill/receipts-docs/raw/main/assets/images/user-management-flow.png 'High Level User Management Flow')
 
