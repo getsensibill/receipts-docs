@@ -1130,9 +1130,7 @@ paths:
         - in: query
           name: status
           description: Will allow you to filter for transactions by transaction status. To specify multiple statuses, use comma-separated values.
-          example: 
-            - "processing"
-            - "completed"
+          example: "processing,completed"
           schema:
             type: array
             items:
@@ -7835,9 +7833,11 @@ components:
       type: string
       enum:
         - image
+        - arts_xml
         - html_email
         - pdf_email
         - text_email
+        - image_email
         - raw_text
         - pdf
 
