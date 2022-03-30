@@ -901,8 +901,6 @@ paths:
           example:
             - processing
             - completed
-          description: Will allow you to filter for transactions by transaction status. To specify multiple statuses, use comma-separated values.
-          example: "processing,completed"
           schema:
             type: array
             items:
