@@ -3499,14 +3499,17 @@ components:
             properties:
               name:
                 type: string
+                maxLength: 50
               color:
                 type: string
+                maxLength: 7
+                pattern: ^#([0-9a-fA-F]{6})$
                 example: '#ABCDEF'
-              id:
-                type: string
-          description: 'Every element of the array should be an object with the folder''s <code>name</code>, <code>color</code> (as six hex digits) and <code>id</code>.'
+          description: |
+            Every element of the array should be an object representing a folder with a `color` (as six hex digits) and a **unique** folder `name` \
+            Other entries in the array with duplicate folder names will be ignored after picking the first one
         createTestReceipts:
-          default: 'false'
+          default: false
           type: boolean
           description: Can be either "true" or "false". This parameter can be used by early integration partners during testing to create a number of ake testing receipts for the accounts they create.
     notificationSettingsParameters:
