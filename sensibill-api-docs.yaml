@@ -6515,10 +6515,10 @@ components:
           example: completed
           enum:
             - queued
-            - processing
+            - running
             - completed
             - failed
-          description: 'The status of the export. Possible values are: ''''queued'''', ''''processing'''', ''''completed'''', ''''failed'''''
+          description: 'The status of the export. Possible values are: ''''queued'''', ''''running'''', ''''completed'''', ''''failed'''''
         id:
           type: string
           example: IncaCskJ1GiopEYJMjaMLdEgFaDirOUdniwV3Aipl91f4cAWt3hq3eAmB8fZd_xQ9qGNWLswQhjuGzTOiRhA
