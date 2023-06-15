@@ -1,8 +1,14 @@
 openapi: 3.0.3
 info:
   title: Sensibill API
-  description: ''
-  version: 1.0.0
+  description: Receipt Extraction API
+  version: 1.2022.3.30
+  contact:
+    name: Sensibill
+    url: 'https://getsensibill.com/'
+    email: prodsupport@getsensibill.com
+  termsOfService: 'https://getsensibill.com/terms-of-service'
+  
 tags:
   - name: Home
     description: Home
@@ -24,12 +30,6 @@ tags:
     description: Emails
   - name: Merchants
     description: Merchants
-  - name: Email Accounts
-    description: Email Accounts
-  - name: Intercepts
-    description: Intercepts
-  - name: Documents
-    description: Documents
 servers:
   - url: 'https://{environment}.sensibill.io/api/v1'
     variables:
@@ -2446,31 +2446,6 @@ paths:
                 $ref: '#/components/schemas/MerchantsDto'
         '500':
           description: Internal server error.
-  /intercepts:
-    get:
-      operationId: getIntercepts
-      tags:
-        - Intercepts
-      summary: Intercepts list
-      description: This endpoint allows you to retrieve the list of all applicable intercepts for the user.
-      parameters:
-        - $ref: '#/components/parameters/LocaleParameter'
-        - $ref: '#/components/parameters/ScaleParameter'
-      responses:
-        '200':
-          description: Success. The intercepts were successfully retrieved.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InterceptsResponse'
-        '400':
-          description: 'Bad Request. This will occur if you omit a required parameter, or if you provide an invalid value for a parameter.'
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you attempt to use a client token with this endpoint. This endpoint must be used with a user-token.
-        '500':
-          description: 'Internal server error. This will occur if a user does not exist in the request, or if saving to the database fails.'
   /achievements:
     get:
       tags:
@@ -2786,337 +2761,6 @@ paths:
           description: Forbidden. The Insights feature is not enabled for the client this user belongs to.
         '500':
           description: Internal Server Error.
-  /documents:
-    get:
-      tags:
-        - Documents
-      summary: Returns a paginated list of documents from a user.
-      description: This will retrieve a list of documents for the current user. The list is paginated
-      operationId: getDocuments
-      parameters:
-        - name: limit
-          in: query
-          description: Specify the number of documents to return. If no value is passed it will use the default to limit the number of items in the list
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 100
-        - name: offset
-          in: query
-          description: 'Page number for the resources to be returned. The page count uses the limit value to define which resources will be returned.<br> It is zero based index, so first page is 0. <br>Example for starting at the third page in a list of results:<br> <code>?offset=2</code>.'
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-        - name: filter.amountDue
-          in: query
-          description: 'Array of amountDue to filter the documents. The value considered is afterTax. <br/>Example: <code>filter.amountDue=1000.55&filter.amountDue=1010.90</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: number
-        - name: filter.amountDue.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the amountDue value to filter the documents. The value considered is afterTax. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.amountDue.gte=1000.55</code> <br/>Example with operators (behave like AND): <code>filter.amountDue.gte=1000.55&filter.amountDue.lte=1010.90</code>'
-          required: false
-          schema:
-            type: number
-        - name: filter.amountDue.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the amountDue value to filter the documents. The value considered is afterTax. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.amountDue.lte=1000.55</code> <br/>Example with operators (behave like AND): <code>filter.amountDue.gte=1000.55&filter.amountDue.lte=1010.90</code>'
-          required: false
-          schema:
-            type: number
-        - name: filter.arrivalDateTime.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the arrivalDateTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query. ArrivalDateTime field does not accept exact match and is considered to be UTC. Date time formats allowed are: ''YYYY-MM-DDTHH:mm:ss.SSS'' or ''YYYY-MM-DD HH:mm:ss.SSS''. Time fields can be suppressed from the end to the beginning i.e. ''YYYY-MM-DD HH:mm'' is acceptable. <br/>Example with just date: <code>filter.arrivalDateTime.gte=''2012-12-28''</code> <br/>Example with date and time: <code>filter.arrivalDateTime.gte=''2012-12-28T21:27''</code> <br/>Example with date and time: <code>filter.arrivalDateTime.gte=''2012-12-28 21:27:55.827''</code> <br/>Example with operators (behave like AND): <code>filter.arrivalDateTime.gte=''2012-12-28T21:27''&filter.arrivalDateTime.lte=''2012-12-28T21:27:59''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.arrivalDateTime.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the arrivalDateTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query.  ArrivalDateTime field does not accept exact match. Date time formats allowed are: ''YYYY-MM-DDTHH:mm:ss.SSS'' or ''YYYY-MM-DD HH:mm:ss.SSS''. Time fields can be suppressed from the end to the beginning i.e. ''YYYY-MM-DD HH:mm'' is acceptable. <br/>Example with just date: <code>filter.arrivalDateTime.lte=''2012-12-28''</code> <br/>Example with date and time: <code>filter.arrivalDateTime.lte=''2012-12-28T21:27''</code> <br/>Example with date and time: <code>filter.arrivalDateTime.lte=''2012-12-28 21:27:55.827''</code> <br/>Example with operators (behave like AND): <code>filter.arrivalDateTime.gte=''2012-12-28T21:27''&filter.arrivalDateTime.lte=''2012-12-28T21:27:59''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.categoryCode
-          in: query
-          description: 'Array of categoryCode to filter the documents. <br/>Example: <code>filter.categoryCode=''shopping''&filter.categoryCode=''business''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.currencyCode
-          in: query
-          description: 'Array of currencyCode to filter the documents. <br/>Example: <code>filter.currencyCode=''CAD''&filter.currencyCode=''USD''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.documentDate
-          in: query
-          description: 'Array of documentDate to filter the documents. <br/>Example: <code>filter.documentDate=''2021-04-04''&filter.documentDate=''2021-12-08''&filter.documentDate=''2021-12-28''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.documentDate.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the documentDate to filter the documents. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.documentDate.gte=''2012-12-28''</code> <br/>Example with operators (behave like AND): <code>filter.documentDate.gte=''2012-12-28''&filter.documentDate.lte=''2023-12-28''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.documentDate.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the documentDate to filter the documents. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.documentDate.lte=''2023-12-28''</code> <br/>Example with operators (behave like AND): <code>filter.documentDate.gte=''2012-12-28''&filter.documentDate.lte=''2023-12-28''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.documentNumber
-          in: query
-          description: 'Array of documentNumber to filter the documents. <br/>Example: <code>filter.documentNumber=''112233''&filter.documentNumber=''445566''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.documentTime
-          in: query
-          description: 'Array of documentTime to filter the documents. <br/>Example: <code>filter.documentTime=''21:12''&filter.documentTime=''22:13''&filter.documentTime=''23:14''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.documentTime.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the documentTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.documentTime.gte=''10:00''</code> <br/>Example with operators (behave like AND): <code>filter.documentTime.gte=''10:00''&filter.documentTime.lte=''14:00''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.documentTime.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the documentTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.documentTime.gte=''10:00''</code> <br/>Example with operators (behave like AND): <code>filter.documentTime.gte=''10:00''&filter.documentTime.lte=''14:00''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.documentType
-          in: query
-          description: 'Array of documentType to filter the documents. Currently valid value is invoice. <br/>Example: <code>filter.documentType=''invoice''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.foreignId
-          in: query
-          description: 'Array of foreignId to filter the documents. <br/>Example: <code>filter.foreignId=''20210930_001''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.lastUpdateDateTime.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the lastUpdateDateTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query. ArrivalDateTime field does not accept exact match and is considered to be UTC. Date time formats allowed are: ''YYYY-MM-DDTHH:mm:ss.SSS'' or ''YYYY-MM-DD HH:mm:ss.SSS''. Time fields can be suppressed from the end to the beginning i.e. ''YYYY-MM-DD HH:mm'' is acceptable. <br/>Example with just date: <code>filter.lastUpdateDateTime.gte=''2012-12-28''</code> <br/>Example with date and time: <code>filter.lastUpdateDateTime.gte=''2012-12-28T21:27''</code> <br/>Example with date and time: <code>filter.lastUpdateDateTime.gte=''2012-12-28 21:27:55.827''</code> <br/>Example with operators (behave like AND): <code>filter.lastUpdateDateTime.gte=''2012-12-28T21:27''&filter.lastUpdateDateTime.lte=''2012-12-28T21:27:59''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.lastUpdateDateTime.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the lastUpdateDateTime to filter the documents. All filter conditions will compose a logical `AND` chain in the query.  ArrivalDateTime field does not accept exact match. Date time formats allowed are: ''YYYY-MM-DDTHH:mm:ss.SSS'' or ''YYYY-MM-DD HH:mm:ss.SSS''. Time fields can be suppressed from the end to the beginning i.e. ''YYYY-MM-DD HH:mm'' is acceptable. <br/>Example with just date: <code>filter.lastUpdateDateTime.lte=''2012-12-28''</code> <br/>Example with date and time: <code>filter.lastUpdateDateTime.lte=''2012-12-28T21:27''</code> <br/>Example with date and time: <code>filter.lastUpdateDateTime.lte=''2012-12-28 21:27:55.827''</code> <br/>Example with operators (behave like AND): <code>filter.lastUpdateDateTime.gte=''2012-12-28T21:27''&filter.lastUpdateDateTime.lte=''2012-12-28T21:27:59''</code>'
-          required: false
-          schema:
-            type: string
-        - name: filter.merchantName
-          in: query
-          description: 'Array of merchantName to filter the documents. <br/>Example: <code>filter.merchantName=''Home Sense''&filter.merchantName=''IKAE''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.merchantTaxIdNumber
-          in: query
-          description: 'Array of merchantTaxIdNumber to filter the documents. <br/>Example: <code>filter.merchantTaxIdNumber=''1111 RT0001''&filter.merchantTaxIdNumber=''2222 RT0002''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.paymentTender
-          in: query
-          description: 'Array of paymentTender to filter the documents. Valid values: ''Amex'' | ''Cash'' | ''Check'' | ''Coupon'' | ''Credit'' | ''CreditDebit'' | ''CustomerAccount'' | ''Debit'' | ''DinersClub'' | ''Fleet'' | ''GiftCard'' | ''GiftCertificate'' | ''HouseAccount'' | ''Interac'' | ''InternationalMaestro'' | ''Loyalty'' | ''MasterCard'' | ''Paypal'' | ''Prepaid'' | ''StoreCard'' | ''StoredValue'' | ''TravelersCheck'' | ''UKMaestro'' | ''VisaCredit'' | ''VisaDebit'' | ''Visa'' | ''Voucher <br/>Example: <code>filter.paymentTender=''Amex''&filter.paymentTender=''Cash''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.total
-          in: query
-          description: 'Array of total to filter the documents. The value considered is afterTax. When an array of filter.total is provided, they will compose a logial `OR` chain in the query. A mix of operators with basic values is not supported. <br/>Example (behave like OR): <code>filter.total=1000.55&filter.total=1010.90</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: number
-        - name: filter.total.gte
-          in: query
-          description: 'This is a filter condition `greater than or equal` on the total value to filter the documents. The value considered is afterTax. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.total.gte=1000.55</code> <br/>Example with operators (behave like AND): <code>filter.total.gte=1000.55&filter.total.lte=1010.90</code>'
-          required: false
-          schema:
-            type: number
-        - name: filter.total.lte
-          in: query
-          description: 'This is a filter condition `less than or equal` on the total value to filter the documents. The value considered is afterTax. All filter conditions will compose a logical `AND` chain in the query. A mix of operators with basic values is not supported. <br/>Example with single operator: <code>filter.total.lte=1000.55</code> <br/>Example with operators (behave like AND): <code>filter.total.gte=1000.55&filter.total.lte=1010.90</code>'
-          required: false
-          schema:
-            type: number
-        - name: filter.status
-          in: query
-          description: 'Array of status to filter the documents. Valid values: [''InProcessing'', ''CompletedFailed'', ''CompletedSuccess''] <br/>Example: <code>filter.status=''InProcessing''&filter.status=''CompletedSuccess''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: filter.sourceFormat
-          in: query
-          description: 'Array of sourceFormat to filter the documents. Currently accepted values are: ''image'' and ''pdf''. <br/>Example: <code>filter.sourceFormat=''image''&filter.sourceFormat=''pdf''</code>'
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: Success. The list of documents was successfully retrieved.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetDocumentListResponseDto'
-        '400':
-          description: 'Bad Request. This will occur if you omit a required parameter, send an invalid parameter or if you provide an invalid value for a parameter.'
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you try to use this endpoint without being setup for documents.
-        '500':
-          description: Internal Server Error.
-    post:
-      tags:
-        - Documents
-      summary: Create a new document
-      description: This allows clients to submit new documents to be processed by the system
-      requestBody:
-        $ref: '#/components/requestBodies/DocumentCreateRequest'
-      responses:
-        '200':
-          description: Success. The new document was successfully submitted and its ID returned.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentCreationResponseDto'
-        '400':
-          description: 'Bad Request. This will occur if you provide an invalid value for a request parameter, an invalid parameter or invalid body.'
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you try to use this endpoint without being setup for documents.
-        '500':
-          description: Internal Server Error.
-    delete:
-      tags:
-        - Documents
-      summary: Delete documents
-      description: 'This endpoint will allow you to batch delete documents. To delete one or more documents pass their ids as an array in the request body <br/><br/><strong>Important</strong>: If any of the documents fail to delete the whole request will fail'
-      requestBody:
-        $ref: '#/components/requestBodies/DocumentDeleteRequest'
-      responses:
-        '200':
-          description: Success. The documents were deleted from the system and the array of deleted document ids are passed back.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DocumentDeleteResponseDto'
-        '400':
-          description: 'Bad Request. This will occur if you provide an invalid value for a request parameter, an invalid parameter or invalid body. This can also happen if there is a problem deleting one or more of the documents in the request The response will have the document id that caused the problem and the error message'
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you try to use this endpoint without being setup for documents.
-        '500':
-          description: Internal Server Error.
-  '/documents/{id}':
-    get:
-      tags:
-        - Documents
-      summary: Get Document
-      description: This endpoint will retrieve the details of a single document with the given ID.
-      operationId: getDocumentById
-      parameters:
-        - $ref: '#/components/parameters/DocumentIdParameter'
-      responses:
-        '200':
-          description: Success. The document was successfully retrieved.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetDocumentResponseDto'
-        '400':
-          description: Bad Request. This will occur if you provide an invalid value for a request parameter.
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you try to use this endpoint without being setup for documents.
-        '404':
-          description: Not Found. The document ID you have provided is not one of this user's documents.
-        '500':
-          description: Internal Server Error.
-    patch:
-      tags:
-        - Documents
-      summary: Update a document
-      description: This endpoint allows you to update a specific subset of data for a single document given its ID. The schema defined below outlines the fields which can be updated.
-      operationId: editDocument
-      parameters:
-        - name: id
-          in: path
-          description: A unique ID that identifies this document in the Sensibill system.
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: An object composed of all the fields you want to edit for the given document.
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditDocumentRequestDto'
-      responses:
-        '200':
-          description: Successful response - returns the Id of the updated document
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EditDocumentResponseDto'
-        '400':
-          description: Bad Request. This will occur if you provide an invalid value for a request parameter.
-        '401':
-          description: 'Unauthorized. This will occur if you do not supply an access-token to this endpoint, or if you provide an expired or invalid access token.'
-        '403':
-          description: Forbidden. This will occur if you try to use this endpoint without being setup for documents.
-        '404':
-          description: Not Found. The document ID you have provided is not one of this user's documents.
-        '500':
-          description: Internal Server Error.
 components:
   schemas:
     AnyType:
@@ -3342,25 +2986,7 @@ components:
               example: 'email/:emailID'
             merchantsList:
               type: string
-              example: merchants
-            createEmailAccount:
-              type: string
-              example: accounts/email
-            listEmailAccounts:
-              type: string
-              example: accounts/email
-            updateEmailAccount:
-              type: string
-              example: 'accounts/email/:id'
-            emailAccountDetail:
-              type: string
-              example: 'accounts/email/:id'
-            deleteEmailAccount:
-              type: string
-              example: 'accounts/email/:id'
-            interceptsList:
-              type: string
-              example: intercepts
+              example: 'merchants'
             achievements:
               type: string
               example: achievements
@@ -3611,48 +3237,6 @@ components:
                 enableMetrics:
                   type: boolean
                   example: false
-            intercepts:
-              type: object
-              properties:
-                enableSkipButton:
-                  type: boolean
-                  example: false
-                enableSuggestedFolders:
-                  type: boolean
-                  example: false
-                enableLocalPushNotification:
-                  type: boolean
-                  example: false
-                percentageOfUsersToShowIntercepts:
-                  type: integer
-                  default: 0
-                enableIntercepts:
-                  type: boolean
-                  example: false
-            iOSInboxSync:
-              type: object
-              properties:
-                outlookSyncEnabled:
-                  type: boolean
-                  example: false
-                gmailSyncEnabled:
-                  type: boolean
-                  example: false
-                inboxSyncEnabled:
-                  type: boolean
-                  example: false
-            androidInboxSync:
-              type: object
-              properties:
-                outlookSyncEnabled:
-                  type: boolean
-                  example: false
-                gmailSyncEnabled:
-                  type: boolean
-                  example: false
-                inboxSyncEnabled:
-                  type: boolean
-                  example: false
             camera:
               type: object
               properties:
@@ -3798,9 +3382,6 @@ components:
             enableEmailNotifications:
               type: boolean
               example: true
-            showEmailScanning:
-              type: boolean
-              example: true
             showForgotPassword:
               type: boolean
               example: true
@@ -3884,17 +3465,6 @@ components:
         locale:
           type: string
           description: 'Provides the locale for the user. Must be a supported value from the list of locale-codes, which can be obtained by going to /lookups/locales'
-        emailScanningEnabled:
-          type: boolean
-          description: Should email for the user be running
-        emailScanningMode:
-          type: string
-          description: 'How often emails should be scanned, one of ''onetime'', ''weekly'', ''daily'', ''hourly'''
-        emailScanningScanAfter:
-          type: string
-          format: date
-          example: '2015-11-12T23:20:50.52Z'
-          description: If set only email from after the given date will be imported. See RFC 3339 Section 5.6 for format.
     UserUpdateDto:
       allOf:
         - $ref: '#/components/schemas/notificationSettingsParameters'
@@ -3929,14 +3499,17 @@ components:
             properties:
               name:
                 type: string
+                maxLength: 50
               color:
                 type: string
+                maxLength: 7
+                pattern: ^#([0-9a-fA-F]{6})$
                 example: '#ABCDEF'
-              id:
-                type: string
-          description: 'Every element of the array should be an object with the folder''s <code>name</code>, <code>color</code> (as six hex digits) and <code>id</code>.'
+          description: |
+            Every element of the array should be an object representing a folder with a `color` (as six hex digits) and a **unique** folder `name` \
+            Other entries in the array with duplicate folder names will be ignored after picking the first one
         createTestReceipts:
-          default: 'false'
+          default: false
           type: boolean
           description: Can be either "true" or "false". This parameter can be used by early integration partners during testing to create a number of ake testing receipts for the accounts they create.
     notificationSettingsParameters:
@@ -3962,18 +3535,6 @@ components:
           default: 'true'
           type: boolean
           description: Can be either "true" or "false". This parameter can be used to indicate that the user wishes for an email notification when key account changes are made such as when their password is changed.
-    DocumentTaxDto:
-      type: object
-      properties:
-        amount:
-          type: number
-          example: 123.2
-        percent:
-          type: number
-          example: 1.2
-        type:
-          type: string
-          example: GST
     TaxDto:
       type: object
       properties:
@@ -4242,20 +3803,6 @@ components:
         notes:
           type: string
           description: ''
-    DocumentListUserMetadataDto:
-      properties:
-        expenseType:
-          $ref: '#/components/schemas/ExpenseTypesEnum'
-        folders:
-          type: array
-          items:
-            type: string
-          description: ''
-        isNew:
-          type: boolean
-        notes:
-          type: string
-          description: ''
     ReceiptCreateDto:
       type: object
       properties:
@@ -4429,26 +3976,6 @@ components:
       properties:
         id:
           type: string
-    DocumentCreateDto:
-      type: object
-      required:
-        - sourceFile
-        - documentType
-      properties:
-        sourceFile:
-          default: ''
-          type: string
-          format: binary
-          description: 'The binary data to be attached within a multi-part form. The file type can be either JPG, GIF, PNG or PDF and the maximum file size for the file is 5 MB.'
-        foreignId:
-          type: string
-          description: An integrator supplied identifier that must be unique. In case of upload failure or loss of document Id this  Id can be used on a new request with the source file to receive the original document id without our system reprocessing the source file.
-          example: doc-123-sub
-        documentType:
-          type: string
-          description: 'The type of the document being submitted.  <br/>Enum: [invoice]'
-          enum:
-            - invoice
     AuthorizationResponse:
       type: object
       properties:
@@ -4611,28 +4138,6 @@ components:
                 push:
                   type: boolean
                   example: true
-        recentEmailScans:
-          type: array
-          items:
-            type: object
-            properties:
-              scanTime:
-                type: string
-                format: date
-                example: '2015-09-10T15:43:29.594Z'
-              emailsDownloaded:
-                type: integer
-                example: 79
-              folders:
-                type: array
-                items:
-                  type: string
-        emailScanningMode:
-          type: string
-          example: daily
-        emailScanningEnabled:
-          type: boolean
-          example: true
         locale:
           type: string
           example: en-CA
@@ -5073,7 +4578,6 @@ components:
         - $ref: '#/components/schemas/RecentlyAddedCountDto'
         - $ref: '#/components/schemas/NonReceiptEmailsCountDto'
         - $ref: '#/components/schemas/TriggeredRemindersCountDto'
-        - $ref: '#/components/schemas/FailedInboxSyncsCountDto'
     UserTagsResponseDto:
       type: object
       properties:
@@ -5164,14 +4668,6 @@ components:
       type: object
       properties:
         triggeredReminders:
-          type: object
-          properties:
-            receipts:
-              type: integer
-    FailedInboxSyncsCountDto:
-      type: object
-      properties:
-        failedInboxSyncs:
           type: object
           properties:
             receipts:
@@ -7019,10 +6515,10 @@ components:
           example: completed
           enum:
             - queued
-            - processing
+            - running
             - completed
             - failed
-          description: 'The status of the export. Possible values are: ''''queued'''', ''''processing'''', ''''completed'''', ''''failed'''''
+          description: 'The status of the export. Possible values are: ''''queued'''', ''''running'''', ''''completed'''', ''''failed'''''
         id:
           type: string
           example: IncaCskJ1GiopEYJMjaMLdEgFaDirOUdniwV3Aipl91f4cAWt3hq3eAmB8fZd_xQ9qGNWLswQhjuGzTOiRhA
@@ -7233,244 +6729,6 @@ components:
               receiptCateogry:
                 type: string
                 example: General Retail
-    CreateEmailAccountDto:
-      required:
-        - authenticationtype
-        - emailAddress
-        - emailProvider
-      properties:
-        authenticationtype:
-          type: string
-          enum:
-            - OAuth
-            - API
-          description: This is how the user authenticates themselves. Must be either 'OAuth' or 'API'.
-        emailAddress:
-          type: string
-          format: email
-          example: test@gmail.com
-          description: The email address of the account.
-        emailProvider:
-          type: string
-          enum:
-            - gmail
-            - outlook
-          description: The name of the email service. Must be either 'gmail' or 'outlook'.
-    UpdateEmailAccountDto:
-      required:
-        - expensetype
-      properties:
-        authCode:
-          type: string
-          example: 4/7PJFDsGaNwdun9OaWmzVm5crv_M3S6f9rb0gGRxfF_0
-          description: 'The auth code provided by Google, used by the backend server to generate oauth tokens. If this is set, accessToken and refreshToken should not be set.'
-        accessToken:
-          type: string
-          description: 'The access token for the account that is being added. If this (and refreshToken) are set, authCode should not be set.'
-        refreshToken:
-          type: string
-          description: 'The refresh token for the account that is being added. If this (and accessToken) are set, authCode should not be set.'
-        expiresAt:
-          type: string
-          example: '2017-06-21 19:56:32 +0000'
-          description: The date when the access token expires. Different OAuth implementations use this or expiresIn (at least one of the two will be set).
-        expiresIn:
-          type: integer
-          example: 500000
-          description: How long until the access token expires. Different OAuth implementations use this or expiresAt (at least one of the two will be set).
-        expensetype:
-          type: string
-          enum:
-            - personal
-            - business
-          description: 'The classification of the type of expense. Must be either ''personal'', ''business'', or null.'
-        defaultFolder:
-          type: string
-          description: 'If set, this specifies the externalID of the default folder into which the receipts associated with the email will be synced. You cannot set this and createFolder at the same time.'
-        createFolder:
-          type: string
-          example: my folder
-          description: 'If set, a new folder will be created with the name of createFolder. The  defaultFolder will be set to that. Otherwise, the defaultFolder will be set to null. You  cannot set this and defaultFolder at the same time.'
-        defaultNotes:
-          type: string
-          default: ''
-          description: The default notes associated with the synced emails.
-    CreateEmailAccountRequestItems:
-      allOf:
-        - $ref: '#/components/schemas/UpdateEmailAccountDto'
-        - $ref: '#/components/schemas/CreateEmailAccountDto'
-    CreateEmailAccountResponseDto:
-      type: object
-      properties:
-        externalID:
-          type: string
-          example: rPXSoI0KdK2lWhFWZPZ2
-          description: An ID for the account that is unique within the email accounts collection.
-        emailAddress:
-          type: string
-          format: email
-          example: test@example.com
-          description: The email address of the account.
-        emailProvider:
-          type: string
-          example: gmail
-          description: The name of the email service.
-        expenseType:
-          type: string
-          example: business
-          description: The classification of the type of expense.
-        lastForwardSyncStart:
-          type: string
-          format: date-time
-          example: '1985-04-12T23:20:50.52Z'
-          description: The start date/time of the last forward sync.
-        lastForwardSyncEnd:
-          type: string
-          format: date-time
-          example: '1985-04-12T23:22:50.52Z'
-          description: The end date/time of the last forward sync.
-        lastForwardSyncCount:
-          type: integer
-          example: 34
-          description: The number of emails synced in the last forward sync.
-        lastForwardSyncStatus:
-          type: string
-          enum:
-            - success
-            - processing
-            - failure
-          example: success
-          description: The status of the last attempted forward sync.
-        lastBackwardSyncStart:
-          type: string
-          format: date-time
-          example: '1985-05-12T23:20:50.52Z'
-          description: The start date/time of the last backward sync.
-        lastBackwardSyncEnd:
-          type: string
-          format: date-time
-          example: '2015-04-12T21:20:50.52Z'
-          description: The end date/time of the last backward sync.
-        lastBackwardSyncCount:
-          type: integer
-          example: 34
-          description: The number of emails synced in the last backward sync.
-        lastBackwardSyncStatus:
-          type: string
-          enum:
-            - success
-            - processing
-            - failure
-          example: success
-          description: The status of the last attempted backward sync.
-        defaultFolder:
-          type: string
-          example: PpZU7X5NflyfL2_DNuMs
-          description: 'If set, the externalID of the default folder into which the receipts associated with the email will be synced.'
-        defaultNotes:
-          type: string
-          example: 'Work expenses #work'
-          description: The default notes associated with the synced emails.
-    EmailAccountsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/EmailAccountsResponseDto'
-    EmailAccountsResponseDto:
-      type: object
-      properties:
-        externalID:
-          type: string
-          example: rPXSoI0KdK2lWhFWZPZ2
-          description: An ID for the account that is unique within the email accounts collection.
-        emailAddress:
-          type: string
-          example: test@example.com
-          description: The email address of the account.
-        emailProvider:
-          type: string
-          enum:
-            - gmail
-            - outlook
-          example: gmail
-          description: The name of the email service.
-        expensetype:
-          type: string
-          enum:
-            - personal
-            - business
-          example: business
-          description: The classification of the type of expense.
-        defaultFolder:
-          type: string
-          example: PpZU7X5NflyfL2_DNuMs
-          description: 'If set, the externalID of the default folder into which the receipts associated with the email will be synced.'
-    InterceptsResponse:
-      type: object
-      required:
-        - intercepts
-      properties:
-        intercepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/InterceptItems'
-    InterceptItems:
-      allOf:
-        - $ref: '#/components/schemas/InterceptDto'
-        - $ref: '#/components/schemas/InterceptChildrenDto'
-    InterceptDto:
-      type: object
-      required:
-        - id
-        - name
-        - title
-        - imageURL
-      properties:
-        id:
-          type: string
-          example: aQ2pgTAW_nx09NcQI0i6
-          description: An ID for the intercept that is unique within the intercepts collection.
-        name:
-          type: string
-          example: generic_problem
-          description: A unique name that identifies the intercept.
-        title:
-          type: string
-          example: Imagine if you never had to hunt for a receipt again?
-          description: The title of the intercept.
-        alternativeTitle:
-          type: string
-          example: Imagine if you had all your receipts in one easy place!
-          description: A possible alternative title for the intercept.
-        body:
-          type: string
-          example: Have you ever experienced the following issues...
-          description: The body of the intercept.
-        imageURL:
-          type: string
-          example: 'https://www.sensibill.io/returns@3x.png'
-          description: A URL of the image associated with the intercept.
-        buttonText:
-          type: string
-          example: Capture a receipt!
-          description: The text of the button for this intercept.
-        metaData:
-          description: An object that contains arbitrary data for other UI components.
-          type: object
-          properties:
-            suggestedFolderName:
-              type: string
-              example: PpZU7X5NflyfL2_DNuMs
-              description: Suggested folder name for a particular intercept
-    InterceptChildrenDto:
-      type: object
-      required:
-        - children
-      properties:
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/InterceptDto'
-          description: An array of nested intercepts.
     UserSubmittedDataResponseDto:
       type: object
       properties:
@@ -7918,25 +7176,6 @@ components:
           example: Home Sense
         type:
           $ref: '#/components/schemas/DiscountTypesEnum'
-    DocumentDiscountDto:
-      description: Contains info about one applied discount.
-      allOf:
-        - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-      properties:
-        description:
-          description: A user-presentable description of this discount.
-          type: string
-          example: 10.00%
-        methodCode:
-          description: A code used by the merchant to identify this discount
-          type: string
-          example: Home Sense
-        percent:
-          description: 'May be set if this discount is percent based, where a value of N represents an N% discount.'
-          type: number
-          example: Home Sense
-        type:
-          $ref: '#/components/schemas/DiscountTypesEnum'
     DiscountConfidenceDto:
       properties:
         beforeTax:
@@ -7953,16 +7192,6 @@ components:
       description: Contains info about one applied fee.
       allOf:
         - $ref: '#/components/schemas/TaxableAmountDto'
-      properties:
-        description:
-          description: A user-presentable description of this fee.
-          type: string
-        type:
-          $ref: '#/components/schemas/FeeTypesEnum'
-    DocumentFeeDto:
-      description: Contains info about one applied fee.
-      allOf:
-        - $ref: '#/components/schemas/DocumentTaxableAmountDto'
       properties:
         description:
           description: A user-presentable description of this fee.
@@ -8063,86 +7292,6 @@ components:
           type: number
           description: The quantity of units of the item. If there is a unit of measure this will be the quantity of the specified units of measure.
           example: 2
-    DocumentItemDto:
-      properties:
-        description:
-          description: An additional description of an item.
-          type: string
-          example: Sony Big TV
-        brand:
-          type: string
-          description: The brand name of this item.
-          example: Sony
-        buyLink:
-          type: string
-          description: A link to this item on the retailer's website.
-          example: 'https://www.example.com/buy/123'
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentDiscountDto'
-        fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentFeeDto'
-        imageUrl:
-          type: string
-          description: A url to an image of this item.
-          example: 'https://example.com/somepath/1.png'
-        itemIds:
-          description: 'A set of strings set by the merchant to identify this item. The meaning of these values vary by merchant, and are not guaranteed to be unique in any way.'
-          type: array
-          items:
-            type: string
-            example: wh1000xm2
-        listPrice:
-          $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        loyaltyRewards:
-          $ref: '#/components/schemas/DocumentLoyaltyRewardsDto'
-        name:
-          type: string
-          description: 'A user-presentable name for this item, which should be the main content of the line item.'
-          example: ''
-        price:
-          $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        priceBeforeDiscountsFees:
-          $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        properties:
-          description: Will be used to define miscellaneous item properties.
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                description: A name that describes this property.
-                example: color
-                type: string
-              value:
-                description: The value for this property.
-                type: string
-                example: red
-        serialNumbers:
-          description: The serial number of the item.
-          type: array
-          items:
-            type: string
-            example: 1142961142968QWICA
-        sku:
-          type: string
-          description: The SKU for this item as is on the receipt.
-          example: 11429681A/2
-        unitListPrice:
-          $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        unitOfMeasure:
-          type: string
-          description: The unit of measure of the item.
-          example: L
-        unitPrice:
-          $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        unitQuantity:
-          type: number
-          description: The quantity of units of the item. If there is a unit of measure this will be the quantity of the specified units of measure.
-          example: 2
     ItemConfidenceDto:
       properties:
         discounts:
@@ -8192,42 +7341,6 @@ components:
           type: number
           description: Loyalty rewards program name.
           example: PC Optimum
-    DocumentLoyaltyRewardsDto:
-      description: Describes loyalty rewards read from the receipt.
-      properties:
-        accountNumber:
-          type: string
-          description: Loyalty rewards account number
-          example: AN-4535-6628
-        currentBalance:
-          type: number
-          description: The current balance of the rewards program after adding the number of loyalty points.
-          example: 10500
-        nextRewardLevel:
-          type: number
-          description: The milestone number of points needed to reach the next level of the rewards program.
-          example: 15000
-        pointsAwarded:
-          type: number
-          description: The total number of points awarded for a given receipt or line item.
-          example: 500
-        programName:
-          type: number
-          description: Loyalty rewards program name.
-          example: PC Optimum
-    DocumentTaxableAmountDto:
-      type: object
-      properties:
-        taxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentTaxDto'
-        beforeTax:
-          type: number
-          example: 12.2
-        afterTax:
-          type: number
-          example: 12.2
     TaxableAmountDto:
       type: object
       properties:
@@ -8252,37 +7365,6 @@ components:
           $ref: '#/components/schemas/ConfidenceEnum'
         afterTax:
           $ref: '#/components/schemas/ConfidenceEnum'
-    DocumentPaymentDto:
-      type: object
-      properties:
-        afterTax:
-          type: number
-          description: The amount paid with this payment.
-          example: 9.99
-        cashBack:
-          type: number
-          description: Cash back amount if applicable.
-          example: 9.99
-        changeAdjustment:
-          type: number
-          description: The difference between the changeDue and the changeIssued amounts.
-          example: 9.99
-        changeDue:
-          type: number
-          description: Change due amount for cash payments
-          example: 9.99
-        changeIssued:
-          type: number
-          description: ' Change amount that was actually issued (after rounding if any) for cash payments'
-          example: 9.99
-        currencyCode:
-          $ref: '#/components/schemas/CurrencyCode'
-        maskedCardNumber:
-          type: string
-          description: A masked version of the card (if any) used in the payment. Typically in the format **** NNNN for the last 4 digits of a credit card but MAY be different if other cards like gift cards are used.
-          example: '**** 9900'
-        type:
-          $ref: '#/components/schemas/TenderTypesEnum'
     TenderDto:
       type: object
       properties:
@@ -8390,56 +7472,6 @@ components:
         url:
           type: string
           example: Home Sense
-    DocumentMerchantDto:
-      type: object
-      properties:
-        addressLines:
-          description: The address of the merchant on this document.
-          type: array
-          items:
-            type: string
-        merchantId:
-          type: string
-          description: The merchant id of the merchant as stored in sensibill's system
-          example: homesense
-        merchantName:
-          type: string
-          description: The name of the merchant.
-          example: Home Sense
-        email:
-          type: string
-          description: The email for the merchant.
-          example: Home Sense
-        geoLocation:
-          type: string
-          description: The geolocation for the merchant.
-          example: +43.6645326-79.3845407
-        storeName:
-          type: string
-          description: The specific store name of this merchant.
-          example: Mike's Home Sense
-        storeId:
-          description: The store id as stored in the sensibill system.
-          type: string
-          example: Mike's Home Sense
-        telephone:
-          description: The phone number for this merchant.
-          type: string
-          example: (647) 258-0801
-        channel:
-          $ref: '#/components/schemas/OrderChannelTypesEnum'
-        categoryCode:
-          type: string
-          description: The category this merchant belongs to.
-          example: shopping
-        taxIdNumber:
-          description: The tax number for this merchant.
-          type: string
-          example: 11111 1111 RT0001
-        url:
-          description: The home webpage for this merchant.
-          type: string
-          example: Home Sense
     MerchantConfidenceDto:
       type: object
       properties:
@@ -8537,21 +7569,6 @@ components:
             calculatedDate:
               type: string
               description: The calculated date based on the receipt date and the duration of the return.
-    DocumentUserMetadataDto:
-      properties:
-        expenseType:
-          $ref: '#/components/schemas/ExpenseTypesEnum'
-        folders:
-          type: array
-          items:
-            type: string
-          description: ''
-        isNew:
-          type: boolean
-          description: ''
-        notes:
-          type: string
-          description: ''
     AccountMetadataDto:
       properties:
         transaction:
@@ -8584,380 +7601,6 @@ components:
           format: date-time
         lifecycleStatus:
           $ref: '#/components/schemas/LifecycleStatusesEnum'
-    GetDocumentResponseDto:
-      description: Structure of the response on the document details endpoint
-      type: object
-      properties:
-        document:
-          $ref: '#/components/schemas/DocumentDto'
-        error:
-          $ref: '#/components/schemas/DocumentErrorDto'
-    GetDocumentListResponseDto:
-      description: Structure of the response on the document list endpoint
-      type: object
-      required:
-        - documents
-        - count
-      properties:
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentListItemDto'
-        count:
-          description: 'This field counts the total number of documents for the user existing in the system.<br> If filter conditions are informed, this would only count the records matching those.'
-          type: integer
-          example: 1
-    DocumentListItemDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: This is a unique identifier which is used to identify the document in the Sensibill system.
-          example: z6uuM0iqnvf8sCDBRYLJ
-        foreignId:
-          description: A unique identifier that was passed on upload to ensure that retries can happen without overriding data.
-          type: string
-          example: '123456'
-        arrivalDateTime:
-          description: The date and time that the document was submitted to our system. With no explicit timezone information.
-          type: string
-          format: date
-          example: '2017-10-26T16:01:13.836Z'
-        lastUpdateDateTime:
-          type: string
-          description: The date and time that the document was last updated in our system. This will typically be when a user has last changed data on the document. With no explicit timezone information.
-          format: date
-          example: '2017-10-26T16:01:13.836Z'
-        documentType:
-          description: The structural type of the document
-          type: string
-          enum:
-            - invoice
-        status:
-          description: The current status of the document
-          type: string
-          example: CompletedSuccess
-          enum:
-            - CompletedSuccess
-            - CompletedFailed
-            - InProcessing
-        content:
-          $ref: '#/components/schemas/DocumentListItemContentDto'
-        source:
-          $ref: '#/components/schemas/SourceDocumentDto'
-    DocumentListItemContentDto:
-      type: object
-      properties:
-        documentNumber:
-          description: The document number that appears on the document. For example this can be invoice number.
-          type: string
-          example: 123910293-12
-        currencyCode:
-          description: The currency code that appears on the document.
-          $ref: '#/components/schemas/CurrencyCode'
-        documentDate:
-          type: string
-          format: date
-          description: 'The date on which this document was generated. This is only the date component of  the local time at which the purchase was made, with no explicit timezone information. see: ''documentGenerationTime''. Date is in ISO-8601 format.'
-          example: '2017-09-01'
-        documentTime:
-          description: 'The time at which this document was generated. This is only the time component of the local time at which the purchase was made, with no explicit timezone information.'
-          type: string
-          example: '12:31:06'
-        payments:
-          description: The payments made on this document. This will be an array with the different payments made towards this document.
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentPaymentDto'
-        merchant:
-          $ref: '#/components/schemas/DocumentListMerchantDto'
-        total:
-          description: 'The total amount on the document. This will be the sum of items, fees, discounts and taxes but without any payments.'
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        amountDue:
-          description: This will be the final amount left to pay on the document
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-    DocumentListMerchantDto:
-      type: object
-      description: The merchant infomation on this document.
-      properties:
-        merchantName:
-          description: The name of the merchant.
-          type: string
-          example: Home Sense
-        categoryCode:
-          description: The category the merchant belongs to.
-          type: string
-          example: shopping
-    DocumentDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: This is a unique identifier which is used to identify the document in the Sensibill system.
-          example: z6uuM0iqnvf8sCDBRYLJ
-        foreignId:
-          type: string
-          description: A unique identifier that was passed on upload to ensure that retries can happen without overriding data.
-          example: 123-receipt-clientId
-        arrivalDateTime:
-          type: string
-          description: The date and time that the document was submitted to our system. With no explicit timezone information.
-          format: date
-          example: '2017-10-26T16:01:13.836Z'
-        lastUpdateDateTime:
-          type: string
-          description: The date and time that the document was last updated in our system. This will typically be when a user has last changed data on the document. With no explicit timezone information.
-          format: date
-          example: '2017-10-26T16:01:13.836Z'
-        documentType:
-          description: The structural type of the document
-          type: string
-          enum:
-            - invoice
-        status:
-          description: The current status of the document
-          type: string
-          example: CompletedSuccess
-          enum:
-            - CompletedSuccess
-            - CompletedFailed
-            - InProcessing
-        content:
-          $ref: '#/components/schemas/DocumentContentDto'
-        source:
-          $ref: '#/components/schemas/SourceDocumentDto'
-    DocumentContentDto:
-      type: object
-      properties:
-        amountDue:
-          description: This will be the final amount left to pay on the document
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        barcodes:
-          type: array
-          description: A list of barcodes available on the document.
-          items:
-            $ref: '#/components/schemas/DocumentContentBarcodeDto'
-        countryCode:
-          $ref: '#/components/schemas/CountryCode'
-        currencyCode:
-          $ref: '#/components/schemas/CurrencyCode'
-        customer:
-          $ref: '#/components/schemas/DocumentContentCustomerDto'
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentDiscountDto'
-        documentNumber:
-          type: string
-          description: The document number that appears on the document. For example this can be invoice number.
-          example: 123910293-12
-        dueDate:
-          type: string
-          format: date
-          description: The date on which the amountDue should be paid. Date is in ISO-8601 format.
-          example: '2017-09-01'
-        documentDate:
-          type: string
-          format: date
-          description: 'The date on which this document was generated. This is only the date component of  the local time at which the purchase was made, with no explicit timezone information. see: ''documentEmissionTime''. Date is in ISO-8601 format.'
-          example: '2017-09-01'
-        documentTime:
-          description: 'The time at which this document was generated. This is only the time component of the local time at which the purchase was made, with no explicit timezone information.'
-          type: string
-          example: '12:31:06'
-        fees:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentFeeDto'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentItemDto'
-        languageCode:
-          type: string
-          description: The language the original document is in.
-          example: english
-        merchant:
-          $ref: '#/components/schemas/DocumentMerchantDto'
-        savings:
-          description: Sum total of all savings found on the document.
-          type: number
-          example: 12.3
-        deliveries:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryDto'
-        loyaltyRewards:
-          $ref: '#/components/schemas/DocumentLoyaltyRewardsDto'
-        payments:
-          description: The payments made on this document. This will be an array with the different payments made towards this document.
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentPaymentDto'
-        total:
-          description: 'The total amount on the document. This will be the sum of items, fees, discounts, taxes and tips but without any payments.'
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        totalBeforeTips:
-          description: The total amount minus any tips on the document. This will be the sum of items with discounts and fees but tips and payments.
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-        totalBeforeDiscountsFeesTips:
-          description: 'The total amount minus any discounts, fees and tips on the document. This will be the sum of items but without fees, discounts, tip and any payments.'
-          allOf:
-            - $ref: '#/components/schemas/DocumentTaxableAmountDto'
-    DocumentContentCustomerDto:
-      description: Information about the customer as presented on the document.
-      type: object
-      properties:
-        customerId:
-          type: string
-          description: An Id assigned to the customer by the merchant.
-          example: 9357630YHE
-        billingAddressLines:
-          description: The billing address the customer has provided defined as an array of address lines.
-          type: array
-          items:
-            type: string
-            example: '[''1 Finite Loop Cupertino'', ''CA 95014'']'
-        email:
-          description: The customer email address as displayed on the document.
-          type: string
-          example: john@example.com
-        name:
-          description: The name of the customer.
-          type: string
-          example: john doe
-        telephoneNumber:
-          description: The phone number of the customer.
-          type: string
-          example: 905-123-1232
-    DocumentContentBarcodeDto:
-      description: Describes a barcode as read from a document.
-      type: object
-      properties:
-        text:
-          description: Data contained in the barcode.
-          type: string
-        type:
-          description: 'Original type of barcode, eg: UPC, EAN, QR'
-          type: string
-          example: UPC
-    DocumentCreationResponseDto:
-      type: object
-      properties:
-        id:
-          type: string
-          description: This is a unique identifier which is used to identify the document on Sensibill's system.
-          example: XuncoaVG7XMTY0iWHTCa
-    DocumentDeleteResponseDto:
-      description: The list of document Ids which were deleted from the system
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-          example:
-            - XuncoaVG7XMTY0iWHTCa
-            - BuDcoaVG74MTY0iWIYKq
-    DocumentErrorDto:
-      description: Describes the error related to the request if there was a failure
-      properties:
-        errorDescription:
-          description: An in depth description of the error for the request
-          type: string
-        code:
-          description: A unique code to help idenifty the type of error
-          type: string
-    EditDocumentTaxableAmountDto:
-      type: object
-      properties:
-        taxes:
-          type: array
-          nullable: true
-          description: The taxes of this amount. The content passed in the PATCH call will completely replace the current content.
-          items:
-            $ref: '#/components/schemas/DocumentTaxDto'
-        beforeTax:
-          type: number
-          nullable: true
-          description: The total amount before taxes
-          example: 12.2
-        afterTax:
-          type: number
-          nullable: true
-          description: The total amount after taxes
-          example: 12.2
-    EditDocumentMerchantDto:
-      type: object
-      properties:
-        merchantName:
-          type: string
-          nullable: true
-          description: The name of the merchant.
-          example: Home Sense
-        taxIdNumber:
-          description: The tax number for this merchant.
-          type: string
-          nullable: true
-          example: 11111 1111 RT0001
-        categoryCode:
-          type: string
-          nullable: true
-          description: The category this merchant belongs to. Use the endpoint /lookups/receiptcategories for a list of valid categories.
-          example: shopping
-    EditDocumentRequestDto:
-      description: Object that contains the field that will be updated in a Document
-      type: object
-      properties:
-        content:
-          type: object
-          properties:
-            merchant:
-              $ref: '#/components/schemas/EditDocumentMerchantDto'
-            documentNumber:
-              type: string
-              nullable: true
-              description: The document number that appears on the document. For example this can be invoice number.
-              example: 123910293-12
-            dueDate:
-              type: string
-              format: date
-              nullable: true
-              description: The date on which the amountDue should be paid. Date is in ISO-8601 format.
-              example: '2017-09-01'
-            documentDate:
-              type: string
-              format: date
-              nullable: true
-              description: 'The date on which this document was generated. This is only the date component of  the local time at which the purchase was made, with no explicit timezone information. see: ''documentEmissionTime''. Date is in ISO-8601 format.'
-              example: '2017-09-01'
-            documentTime:
-              type: string
-              nullable: true
-              description: 'The time at which this document was generated. This is only the time component of the local time at which the purchase was made, with no explicit timezone information.'
-              example: '12:31:06'
-            amountDue:
-              $ref: '#/components/schemas/EditDocumentTaxableAmountDto'
-            totalBeforeDiscountsFeesTips:
-              $ref: '#/components/schemas/EditDocumentTaxableAmountDto'
-            total:
-              $ref: '#/components/schemas/EditDocumentTaxableAmountDto'
-            currencyCode:
-              $ref: '#/components/schemas/EditCurrencyCode'
-    EditDocumentResponseDto:
-      description: Object with the Id of the updated Document
-      type: object
-      properties:
-        id:
-          type: string
-          description: The Id of the updated Document
-          example: z6uuM0iqnvf8sCDBRYLJ
   parameters:
     ClientIDParameter:
       name: client_id
@@ -9054,8 +7697,9 @@ components:
           - recentlyAdded
           - nonReceiptEmails
           - triggeredReminders
-          - failedInboxSyncs
-      description: 'Comma separated list of filters you would like to get resource count for. If not provided, it will return the count for all supported filters and resources associated with them. <br/><br/>NOTE: If the "triggeredReminders" filter is used then you have to provide the "today" parameter too.'
+      description: 'Comma separated list of filters you would like to get resource count
+        for. If not provided, it will return the count for all supported filters and resources associated with them.
+        <br/><br/>NOTE: If the "triggeredReminders" filter is used then you have to provide the "today" parameter too.'
     UserCountTodayParameter:
       name: today
       in: query
@@ -9636,20 +8280,6 @@ components:
       schema:
         type: string
       description: An optional name to perform a prefix search on.
-    EmailAccountIdParameter:
-      name: id
-      in: path
-      description: A unique ID that identifies this email account in the Sensibill system.
-      required: true
-      schema:
-        type: string
-    DocumentIdParameter:
-      name: id
-      in: path
-      description: A unique Id that identifies this document in the Sensibill system.
-      required: true
-      schema:
-        type: string
   requestBodies:
     JwtAuthenticateRequest:
       required: true
@@ -9811,43 +8441,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EmailsDeleteRequestDto'
-    CreateEmailAccountRequest:
-      description: Add a new email account
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateEmailAccountRequestItems'
-    UpdateEmailAccountRequest:
-      description: Update an email account
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateEmailAccountDto'
-    DocumentCreateRequest:
-      required: true
-      content:
-        multipart/form-data:
-          schema:
-            $ref: '#/components/schemas/DocumentCreateDto'
-    DocumentDeleteRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - ids
-            properties:
-              ids:
-                description: An array of documents ids that should be deleted from the system.
-                type: array
-                items:
-                  type: string
-                example:
-                  - XuncoaVG7XMTY0iWHTCa
-                  - BuDcoaVG74MTY0iWIYKq
   securitySchemes:
     bearerAuth:
       type: http
